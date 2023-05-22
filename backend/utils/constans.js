@@ -6,9 +6,8 @@ const SERVER_ERROR_CODE = 500;
 const CONFLICT_ERROR_CODE = 409;
 const DEFAULT_ALLOWED_METHODS = "GET,HEAD,PUT,PATCH,POST,DELETE";
 const ALLOWED_CORS = [
-  'http://localhost:3000',
   'http://mesto.moulavy.nomoredomains.monster',
-  'https://api.mesto.moulavy.nomoredomains.monster'
+  'https://mesto.moulavy.nomoredomains.monster'
 ];
 
 module.exports = {
