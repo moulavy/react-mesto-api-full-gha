@@ -6,7 +6,7 @@ const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 
 const User = require('../models/user');
-const { NODE_ENV, JWT_SECRET } = process.env;
+//const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -33,8 +33,8 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'tg555000', { expiresIn: '7d' });
-
+      //const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'tg555000', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'tg555000', { expiresIn: '7d' });
       res.cookie('token', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,//чтобы к кукам не было доступа из JavaScript
