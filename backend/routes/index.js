@@ -9,11 +9,11 @@ const userRouter = require('./users');
 const cardRouter = require('./cards');
 const NotFoundError = require('../errors/NotFoundError');
 
-app.get('/crash-test', () => {
+router.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
-}); 
+});
 
 router.post('/signin', celebrate({
   body: Joi.object().keys({

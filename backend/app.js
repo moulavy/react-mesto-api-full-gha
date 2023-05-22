@@ -1,5 +1,5 @@
 const express = require('express');
-require('dotenv').config(); 
+require('dotenv').config();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsCheck = require('./middlewares/cors');
 
-const { PORT = 3005 } = process.env;
+const { PORT = 3007 } = process.env;
 const app = express();
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb', {
