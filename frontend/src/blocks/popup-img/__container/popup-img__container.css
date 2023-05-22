@@ -1,0 +1,8 @@
+.popup-img__container{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  opacity: 1;
+  z-index: 11;
+}

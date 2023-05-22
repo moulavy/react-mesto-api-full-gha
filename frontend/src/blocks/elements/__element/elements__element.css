@@ -1,0 +1,12 @@
+.elements__element {
+  display: grid;
+  position: relative;
+  grid-template-areas:
+    "image-element image-element"
+    "title-element like";
+  width: 282px;
+  height: 362px;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}

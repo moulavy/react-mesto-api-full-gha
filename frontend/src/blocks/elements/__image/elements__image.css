@@ -1,0 +1,7 @@
+.elements__image {
+  grid-area: image-element;
+  width: 282px;
+  height: 282px;
+  cursor: pointer;
+  background-color: #000;
+}

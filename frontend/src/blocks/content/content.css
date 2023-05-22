@@ -1,0 +1,7 @@
+@media screen and (max-width: 768px) {
+  .container {
+    box-sizing: border-box;
+    padding-left: 19px;
+    padding-right: 19px;
+  }
+}

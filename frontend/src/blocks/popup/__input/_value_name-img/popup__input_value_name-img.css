@@ -1,0 +1,10 @@
+.popup__input_value_name-img {
+  /* margin-bottom: 30px; */
+  margin-top: 54px;
+}
+
+@media screen and (max-width: 768px) {
+  .popup__input_value_name-img {
+    margin-top: 75px;   
+  }
+}

@@ -1,0 +1,9 @@
+.popup-confirm__container{
+   height: 188px;
+}
+
+@media screen and (max-width: 768px){
+   .popup-confirm__container {
+    height: 157px;
+}
+}
