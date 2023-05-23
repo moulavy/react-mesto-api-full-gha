@@ -1,7 +1,6 @@
-const {DEFAULT_ALLOWED_METHODS,ALLOWED_CORS}=require('../utils/constans')
+const { DEFAULT_ALLOWED_METHODS, ALLOWED_CORS } = require('../utils/constans');
 
-
-function corsCheck(req,res,next) {
+function corsCheck(req, res, next) {
   const { origin } = req.headers;
   const { method } = req;
   const requestHeaders = req.headers['access-control-request-headers'];

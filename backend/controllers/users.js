@@ -6,6 +6,7 @@ const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 
 const User = require('../models/user');
+
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports.createUser = (req, res, next) => {
@@ -21,12 +22,11 @@ module.exports.createUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-       return next(new ConflictError('Пользователь с таким email уже существует'));
-      } else if (err.name === 'ValidationError') {
-       return next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
-      } else {
-       return next(err);
+        return next(new ConflictError('Пользователь с таким email уже существует'));
+      } if (err.name === 'ValidationError') {
+        return next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
       }
+      return next(err);
     });
 };
 
@@ -37,11 +37,10 @@ module.exports.login = (req, res, next) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'tg555000', { expiresIn: '7d' });
       res.cookie('token', token, {
         maxAge: 3600000 * 24 * 7,
-        httpOnly: true,//чтобы к кукам не было доступа из JavaScript
-        sameSite: true
+        httpOnly: true, // чтобы к кукам не было доступа из JavaScript
+        sameSite: true,
       })
-        .send({ message: "Успешно вошли." })
-
+        .send({ message: 'Успешно вошли.' });
     })
     .catch(next);
 };
@@ -64,10 +63,9 @@ module.exports.getInfoUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-       return next(new NotFoundError('Пользователь по указанному id не найден'));
-      } else {
-       return next(err);
+        return next(new NotFoundError('Пользователь по указанному id не найден'));
       }
+      return next(err);
     });
 };
 
@@ -81,10 +79,9 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'DocumentNotFoundError') {
-       return next(new NotFoundError('Пользователь по указанному id не найден'));
-      } else {
-       return next(err);
+        return next(new NotFoundError('Пользователь по указанному id не найден'));
       }
+      return next(err);
     });
 };
 
@@ -94,16 +91,15 @@ module.exports.updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-      res.send({data: user });
-})
+      res.send({ data: user });
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-       return next(new BadRequestError('При обновлении информации пользователя переданы некорректные данные'));
-      } else if (err.name === 'DocumentNotFoundError') {
-       return next(new NotFoundError('Пользователь по указанному id не найден'));
-      } else {
-       return next(err);
+        return next(new BadRequestError('При обновлении информации пользователя переданы некорректные данные'));
+      } if (err.name === 'DocumentNotFoundError') {
+        return next(new NotFoundError('Пользователь по указанному id не найден'));
       }
+      return next(err);
     });
 };
 
@@ -114,11 +110,10 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-       return next(new BadRequestError('При обновлении аватара пользователя переданы некорректные данные'));
-      } else if (err.name === 'DocumentNotFoundError') {
-       return next(new NotFoundError('Пользователь по указанному id не найден'));
-      } else {
-       return next(err);
+        return next(new BadRequestError('При обновлении аватара пользователя переданы некорректные данные'));
+      } if (err.name === 'DocumentNotFoundError') {
+        return next(new NotFoundError('Пользователь по указанному id не найден'));
       }
+      return next(err);
     });
 };

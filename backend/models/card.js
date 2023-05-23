@@ -16,7 +16,7 @@ const cardSchema = new mongoose.Schema({
       message: 'Неправильный формат ссылки.',
     },
   },
-  owner:{
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
