@@ -9,13 +9,13 @@ module.exports.createCard = (req, res, next) => {
   const userId = req.user._id;
   Card.create({ name, link, owner:userId})
     .then((card) => {
-      res.send({ data: card });
+      res.status(201).send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
+      if (err.name === 'ValidationError') {
+       return next(new BadRequestError('Переданы некорректные данные при создании карточки.'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
@@ -30,15 +30,12 @@ module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.cardId)
     .then((card) => {
       if (!card) {
-        next(new NotFoundError('Карточка по указанному id не найдена'));
+       return next(new NotFoundError('Карточка по указанному id не найдена'));
       } else if (card.owner._id.toString() !== req.user._id) {
-        next(new ForbiddenError('Нельзя удалить чужую карточку.'));
+       return next(new ForbiddenError('Нельзя удалить чужую карточку.'));
       }
-
-
       return Card.findByIdAndRemove(req.params.cardId)
         .then((cardDel) => {
-
           res.send({ data: cardDel })
         })
         .catch(next);
@@ -55,11 +52,11 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
   .then((card) => { res.send(card ); })
   .catch((err) => {
     if (err.name === 'CastError') {
-      next(new BadRequestError('Переданы некорректные данные при лайке карточки по id'));
+     return next(new BadRequestError('Переданы некорректные данные при лайке карточки по id'));
     } else if (err.name === 'DocumentNotFoundError') {
-      next(new NotFoundError('Карточка по указанному id не найдена'));
+     return next(new NotFoundError('Карточка по указанному id не найдена'));
     } else {
-      next(err);
+     return next(err);
     }
   });
 
@@ -72,10 +69,10 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   .then((card) => { res.send(card ); })
   .catch((err) => {
     if (err.name === 'CastError') {
-      next(new BadRequestError('Переданы некорректные данные при дизлайке карточки по id'));
+     return next(new BadRequestError('Переданы некорректные данные при дизлайке карточки по id'));
     } else if (err.name === 'DocumentNotFoundError') {
-      next(new NotFoundError('Карточка по указанному id не найдена'));
+     return next(new NotFoundError('Карточка по указанному id не найдена'));
     } else {
-      next(err);
+     return next(err);
     }
   });

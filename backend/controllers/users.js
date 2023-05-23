@@ -16,15 +16,15 @@ module.exports.createUser = (req, res, next) => {
       name, about, avatar, email, password: hash,
     }))
     .then((user) => {
-      res.send({ data: user });
+      res.status(201).send({ data: user });
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже существует'));
+       return next(new ConflictError('Пользователь с таким email уже существует'));
       } else if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
+       return next(new BadRequestError('Переданы некорректные данные при создании пользователя.'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
@@ -34,14 +34,13 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'tg555000', { expiresIn: '7d' });
-
       res.cookie('token', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,//чтобы к кукам не было доступа из JavaScript
         sameSite: true
       })
         .send({ message: "Успешно вошли." })
-      
+
     })
     .catch(next);
 };
@@ -63,11 +62,11 @@ module.exports.getInfoUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некоректные данные при получении пользователя по id при текущем пользователе.'));
+       return next(new BadRequestError('Переданы некоректные данные при получении пользователя по id при текущем пользователе.'));
       } else if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Пользователь по указанному id не найден'));
+       return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
@@ -82,11 +81,11 @@ module.exports.getUserById = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Переданы некоректные данные при получении пользователя по id.'));
+       return next(new BadRequestError('Переданы некоректные данные при получении пользователя по id.'));
       } else if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Пользователь по указанному id не найден'));
+       return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
@@ -97,16 +96,15 @@ module.exports.updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .orFail()
     .then((user) => {
-
       res.send({data: user });
 })
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('При обновлении информации пользователя переданы некорректные данные'));
+       return next(new BadRequestError('При обновлении информации пользователя переданы некорректные данные'));
       } else if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Пользователь по указанному id не найден'));
+       return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
@@ -118,11 +116,11 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
-        next(new BadRequestError('При обновлении аватара пользователя переданы некорректные данные'));
+       return next(new BadRequestError('При обновлении аватара пользователя переданы некорректные данные'));
       } else if (err.name === 'DocumentNotFoundError') {
-        next(new NotFoundError('Пользователь по указанному id не найден'));
+       return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
-        next(err);
+       return next(err);
       }
     });
 };
