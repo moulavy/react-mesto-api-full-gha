@@ -8,7 +8,6 @@ const mainRouter = require('./routes/index');
 const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const corsCheck = require('./middlewares/cors');
-
 const { PORT = 3007 } = process.env;
 const app = express();
 
