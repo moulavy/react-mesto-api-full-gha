@@ -1,5 +1,5 @@
-export const BASE_URL = 'https://api.mesto.moulavy.nomoredomains.monster';
-//export const BASE_URL = 'http://localhost:3005';
+//export const BASE_URL = 'https://api.mesto.moulavy.nomoredomains.monster';
+export const BASE_URL = 'http://localhost:3007';
 
 function checkResponse(res) {
    if (res.ok) {
@@ -35,7 +35,7 @@ export const authorize = (email, password) => {
 }
 
 
-export const checkToken = (token) => {   
+export const checkToken = () => {   
    return fetch(`${BASE_URL}/users/me`, {
       method: 'GET',
       credentials:'include',

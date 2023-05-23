@@ -47,9 +47,9 @@ function App() {
   
   const loginCallback = (email, password) => {
     authorize(email, password)
-      .then((data) => {
-        if (data) {
-          localStorage.setItem('token', data);
+      .then((data) => {        
+        if (data.message ==="Успешно вошли.") {
+          localStorage.setItem('isAuth', true);
           setLoggedIn(true);
           setEmail(email);
           navigate("/", { replace: true });
@@ -73,7 +73,6 @@ function App() {
 
       })
       .catch((err) => {
-
         setTooltip({ image: negativeImg, text: "Что-то пошло не так! Попробуйте еще раз." });
         handleTooltip();
         console.log(err);
@@ -84,9 +83,9 @@ function App() {
   }
 
   const tokenCheckCallback = () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken(token)
+    const isAuth = localStorage.getItem('isAuth');
+    if (isAuth) {
+      checkToken()
         .then((res) => {
           setLoggedIn(true);
           setEmail(res.data.email);
@@ -94,15 +93,14 @@ function App() {
         })
         .catch((err) => {
           console.log(err);
-        })
-      
+        })      
     }   
   }
 
   const logoutCallback = () => {
     setLoggedIn(false);
     setEmail('');
-    localStorage.removeItem('token');
+    localStorage.removeItem('isAuth');
     navigate("/signin", { replace: true });
   }
 

@@ -40,7 +40,8 @@ module.exports.login = (req, res, next) => {
         httpOnly: true,//чтобы к кукам не было доступа из JavaScript
         sameSite: true
       })
-      .send({token})
+        .send({ message: "Успешно вошли." })
+      
     })
     .catch(next);
 };
