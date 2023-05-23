@@ -18,8 +18,6 @@ function Header({ email, onLogout }) {
                   <Link className='header__button header__button_value_logout' to='/signin' onClick={onLogout}>Выйти</Link>
                } />
             </Routes>
-
-
          </div>
       </header>
    );

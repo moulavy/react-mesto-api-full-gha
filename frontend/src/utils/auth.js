@@ -22,8 +22,7 @@ export const register = (email, password) => {
 
 export const authorize = (email, password) => {
    return fetch(`${BASE_URL}/signin`, {
-      method: 'POST',
-      
+      method: 'POST',      
       headers: {
          'Accept': 'application/json',
          'Content-Type': 'application/json'
@@ -41,8 +40,7 @@ export const checkToken = () => {
       credentials:'include',
       headers: {
          Accept: 'application/json',
-         'Content-Type': 'application/json',
-         //Authorization: `Bearer ${token}`,
+         'Content-Type': 'application/json'
       }
    })
       .then(checkResponse)

@@ -14,10 +14,8 @@ function Register({ onRegister }) {
 
    const handleSubmit = (e) => {
       e.preventDefault();
-      if (!email || !password) {
-          
-         return;
-         
+      if (!email || !password) {          
+         return;         
       }      
       onRegister( email,password)
    }
@@ -28,8 +26,7 @@ function Register({ onRegister }) {
             
             <input className="auth__email auth__input" value={email} onChange={handleChangeEmail} placeholder="Email"></input>
             <input className="auth__password auth__input" value={password} onChange={handleChangePassword} placeholder="Пароль" type="password"></input>
-            <button type="submit" className="auth__button">Зарегистрироваться</button>
-            
+            <button type="submit" className="auth__button">Зарегистрироваться</button>            
          </form>
          <div className="auth__login">
             <p className="auth__question">Уже зарегистрированы?</p>

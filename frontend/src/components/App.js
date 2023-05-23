@@ -1,6 +1,5 @@
 
 import React from 'react';
-
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute';
 import Header from './Header.js';
@@ -17,16 +16,13 @@ import InfoTooltip from './InfoTooltip';
 import api from '../utils/api'
 import { register, authorize, checkToken } from '../utils/auth'
 import { CurrentUserContext } from '../contexts/CurrentUserContext'
-
 import positiveImg from '../images/Union-plus.svg';
 import negativeImg from '../images/Union.svg';
 
-function App() {  
-
+function App() {
   const [currentUser, setCurrentUser] = React.useState({ data: { name: "Имя", about: "Описание", avatar: "https://www.nchti.ru/wp-content/images/profile-anonymous2.png" } });
   const [cards, setCards] = React.useState([]);
   const [email, setEmail] = React.useState("");
-
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -44,11 +40,10 @@ function App() {
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || isImagePopupOpen || isTooltipPopupOpen;
 
-  
   const loginCallback = (email, password) => {
     authorize(email, password)
-      .then((data) => {        
-        if (data.message ==="Успешно вошли.") {
+      .then((data) => {
+        if (data.message === "Успешно вошли.") {
           localStorage.setItem('isAuth', true);
           setLoggedIn(true);
           setEmail(email);
@@ -64,13 +59,11 @@ function App() {
   }
 
   const registerCallback = (email, password) => {
-
     register(email, password)
       .then(() => {
         setTooltip({ image: positiveImg, text: "Вы успешно зарегистрировались!" });
         handleTooltip();
         navigate("/signin", { replace: true });
-
       })
       .catch((err) => {
         setTooltip({ image: negativeImg, text: "Что-то пошло не так! Попробуйте еще раз." });
@@ -93,8 +86,8 @@ function App() {
         })
         .catch((err) => {
           console.log(err);
-        })      
-    }   
+        })
+    }
   }
 
   const logoutCallback = () => {
@@ -136,7 +129,6 @@ function App() {
       });
   }
 
-
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
@@ -147,12 +139,12 @@ function App() {
 
   function handleCardLike(card) {
     // Снова проверяем, есть ли уже лайк на этой карточке
-    const isLiked = card.likes.some(item => item === currentUser.data._id);    
+    const isLiked = card.likes.some(item => item === currentUser.data._id);
     // Отправляем запрос в API и получаем обновлённые данные карточки
     if (!isLiked) {
       api.addLike(card._id)
-        .then((newCard) => {          
-          setCards((state) => state.map((item) =>  item._id === card._id ? newCard : item ))          
+        .then((newCard) => {
+          setCards((state) => state.map((item) => item._id === card._id ? newCard : item))
         })
         .catch((err) => {
           console.log(err);
@@ -160,9 +152,8 @@ function App() {
     }
     else {
       api.deleteLike(card._id)
-        .then((newCard) => {          
+        .then((newCard) => {
           setCards((state) => state.map((item) => item._id === card._id ? newCard : item))
-          
         })
         .catch((err) => {
           console.log(err);
@@ -171,11 +162,10 @@ function App() {
   }
 
   function handleUpdateUser(data) {
- 
     setIsLoading(true);
     api.updateUserInfo(data)
-      .then((res) => {        
-        setCurrentUser(res);        
+      .then((res) => {
+        setCurrentUser(res);
         closeAllPopups();
       })
       .catch((err) => {
@@ -201,10 +191,10 @@ function App() {
       })
   }
 
-  function handleAddPlaceSubmit(data) {    
+  function handleAddPlaceSubmit(data) {
     setIsLoading(true);
     api.addNewCard(data)
-      .then((newCard) => { 
+      .then((newCard) => {
         setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
@@ -214,7 +204,7 @@ function App() {
       .finally(() => {
         setIsLoading(false);
       })
-  } 
+  }
 
   React.useEffect(() => {
     function closeByEscape(evt) {
@@ -233,12 +223,10 @@ function App() {
   React.useEffect(() => {
     tokenCheckCallback();
     if (loggedIn) {
-      
       Promise.all([api.getUserInfo(), api.getInitialCards()])
         .then(([resUser, resCards]) => {
           setCurrentUser(resUser);
           setCards(resCards.reverse());
-
         })
         .catch((err) => {
           console.log(err);
@@ -268,10 +256,8 @@ function App() {
           <Route path="*" element={loggedIn ? <Navigate to="/" replace /> : <Navigate to="/signin" replace />} />
         </Routes>
         <InfoTooltip tooltip={tooltip} isOpen={isTooltipPopupOpen} onClose={closeAllPopups}></InfoTooltip>
-
         <EditProfilePopup isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups} onUpdateUser={handleUpdateUser} isLoading={isLoading} />
-
         <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
         <PopupWithForm
           name='confirm'

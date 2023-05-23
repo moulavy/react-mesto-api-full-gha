@@ -28,7 +28,6 @@ function Login({ onLogin }) {
             <input className="auth__password auth__input" value={password} autoComplete="current-password" onChange={handleChangePassword} placeholder="Пароль" type="password"></input>
             <button type="submit" className="auth__button">Войти</button>
          </form>
-
       </section>
    );
 }

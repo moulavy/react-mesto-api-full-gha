@@ -11,7 +11,6 @@ function InfoTooltip({ isOpen, tooltip, onClose }) {
             ></button>
             <img className="popup-tooltip__image" src={tooltip.image} alt={tooltip.text} />
             <h2 className="popup-tooltip__title" >{tooltip.text}</h2>
-
          </div>
       </section>
    );

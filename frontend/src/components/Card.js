@@ -1,14 +1,10 @@
 import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
-
    const currentUser = React.useContext(CurrentUserContext);
-  
    // Определяем, являемся ли мы владельцем текущей карточки
-
-   const isOwn = card.owner === currentUser.data._id;      
-   const isLiked =card.likes.some(item => item === currentUser.data._id); 
-   
+   const isOwn = card.owner === currentUser.data._id;
+   const isLiked = card.likes.some(item => item === currentUser.data._id);
    const cardLikeButtonClassName = (
       `elements__button-heart ${isLiked && 'elements__button-heart_active'}`
    );
@@ -16,9 +12,8 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
    function handleClick() {
       onCardClick(card);
    }
-   function handleLike() {      
+   function handleLike() {
       onCardLike(card);
-     
    }
    function handleDeleteClick() {
       onCardDelete(card);
@@ -30,7 +25,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
          <h2 className="elements__title">{card.name}</h2>
          <div className="elements__button-like">
             <button aria-label="Like" className={cardLikeButtonClassName} onClick={handleLike}></button>
-            <p className="elements__like-counter">{ card.likes.length}</p>
+            <p className="elements__like-counter">{card.likes.length}</p>
          </div>
       </li>
    )

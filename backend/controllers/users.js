@@ -7,6 +7,7 @@ const ConflictError = require('../errors/ConflictError');
 
 const User = require('../models/user');
 const { NODE_ENV, JWT_SECRET } = process.env;
+
 module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -54,6 +55,7 @@ module.exports.getUsers = (req, res, next) => {
 module.exports.getInfoUser = (req, res, next) => {
   const { _id } = req.user;
   User.findById(_id)
+    .orFail()
     .then((user) => {
       if (!user) {
         return next(new NotFoundError('Пользователь по указанному id не найден'));
@@ -61,9 +63,7 @@ module.exports.getInfoUser = (req, res, next) => {
       return res.send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-       return next(new BadRequestError('Переданы некоректные данные при получении пользователя по id при текущем пользователе.'));
-      } else if (err.name === 'DocumentNotFoundError') {
+      if (err.name === 'DocumentNotFoundError') {
        return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
        return next(err);
@@ -80,9 +80,7 @@ module.exports.getUserById = (req, res, next) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'CastError') {
-       return next(new BadRequestError('Переданы некоректные данные при получении пользователя по id.'));
-      } else if (err.name === 'DocumentNotFoundError') {
+      if (err.name === 'DocumentNotFoundError') {
        return next(new NotFoundError('Пользователь по указанному id не найден'));
       } else {
        return next(err);
@@ -99,7 +97,7 @@ module.exports.updateUserInfo = (req, res, next) => {
       res.send({data: user });
 })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
        return next(new BadRequestError('При обновлении информации пользователя переданы некорректные данные'));
       } else if (err.name === 'DocumentNotFoundError') {
        return next(new NotFoundError('Пользователь по указанному id не найден'));
@@ -115,7 +113,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .orFail()
     .then((user) => res.send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
        return next(new BadRequestError('При обновлении аватара пользователя переданы некорректные данные'));
       } else if (err.name === 'DocumentNotFoundError') {
        return next(new NotFoundError('Пользователь по указанному id не найден'));
