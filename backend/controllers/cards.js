@@ -43,8 +43,7 @@ module.exports.deleteCard = (req, res, next) => {
         return next(new NotFoundError('Карточка по указанному id не найдена'));
       }
       return next(err);
-    }
-    );
+    });
 };
 
 module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
