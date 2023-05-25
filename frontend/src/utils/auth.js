@@ -1,5 +1,5 @@
-export const BASE_URL = 'https://api.mesto.moulavy.nomoredomains.monster';
-//export const BASE_URL = 'http://localhost:3007';
+//export const BASE_URL = 'https://api.mesto.moulavy.nomoredomains.monster';
+export const BASE_URL = 'http://localhost:3007';
 
 function checkResponse(res) {
    if (res.ok) {

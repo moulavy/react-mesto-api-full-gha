@@ -56,9 +56,6 @@ module.exports.getInfoUser = (req, res, next) => {
   User.findById(_id)
     .orFail()
     .then((user) => {
-      if (!user) {
-        return next(new NotFoundError('Пользователь по указанному id не найден'));
-      }
       return res.send({ data: user });
     })
     .catch((err) => {
